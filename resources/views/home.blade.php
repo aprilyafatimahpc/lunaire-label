@@ -3,120 +3,116 @@
 @section('content')
 
 <style>
+    /* HERO SECTION */
     .hero {
+        background: #5a3d3b;
         text-align: center;
-        padding: 60px 20px;
+        padding: 80px 20px;
+        color: white;
     }
+    .hero h1 { letter-spacing: 8px; font-size: 48px; }
+    .hero p { letter-spacing: 3px; font-size: 14px; margin-top: 10px; }
 
-    .hero h1 {
-        letter-spacing: 8px;
-        margin-bottom: 10px;
-    }
-
-    .hero p {
-        font-style: italic;
-    }
-
-    .koleksi {
-        padding: 40px;
-        text-align: center;
-    }
-
+    /* KOLEKSI SECTION */
+    .koleksi { padding: 60px 20px; text-align: center; background: #fdfdfd; }
+    .koleksi h2 { letter-spacing: 4px; margin-bottom: 50px; color: #5a3d3b; }
+    
     .produk-container {
         display: flex;
         justify-content: center;
         gap: 30px;
         flex-wrap: wrap;
-        margin-top: 30px;
     }
 
+    /* CARD STYLE */
     .card {
+        width: 260px;
         background: white;
-        color: #333;
-        width: 250px;
-        padding: 15px;
-        border: 1px solid #ddd;
-        transition: 0.3s;
+        padding: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
     .card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
 
-    .gambar {
-        height: 280px;
-        background: #eee;
-        margin-bottom: 15px;
-    }
+    .gambar-box { 
+    background: #f4f4f4; 
+    padding: 10px; 
+    margin-bottom: 15px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
 
-    .cat {
-        font-size: 10px;
-        letter-spacing: 1px;
-        color: #888;
-        margin-bottom: 5px;
-    }
+.gambar { 
+    width: 100%; 
+    height: 300px; 
+    object-fit: contain; /* Mengubah 'cover' menjadi 'contain' agar gambar tidak terpotong */
+    background: transparent; 
+}
+
+    .kategori { font-size: 11px; color: #999; text-transform: uppercase; margin-bottom: 5px; }
+    .nama-produk { font-weight: bold; margin-bottom: 5px; font-size: 15px; }
+    .harga { font-size: 14px; margin-bottom: 15px; color: #333; }
 
     .btn-detail {
-        background: transparent;
-        border: 1px solid #333;
-        padding: 8px 20px;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #5a3d3b;
+        background: white;
         cursor: pointer;
-        font-family: inherit;
-        margin-top: 10px;
+        transition: 0.3s;
     }
-
-    .btn-detail:hover {
-        background: #4a3733;
-        color: white;
-    }
+    .btn-detail:hover { background: #5a3d3b; color: white; }
 
     .btn-semua {
-        background: #4a3733;
+        margin-top: 60px;
+        background: #5a3d3b;
         color: white;
-        border: 1px solid white;
-        padding: 12px 40px;
-        margin-top: 40px;
+        border: none;
+        padding: 15px 60px;
         cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
     }
-
-    .btn-semua:hover {
-        opacity: 0.9;
-    }
+    .btn-semua:hover { background: #452e2c; }
 </style>
 
-<div class="hero">
+<section class="hero">
     <h1>LUNAIRE</h1>
     <p>ESTETIKA & KEANGGUNAN MODERN</p>
-</div>
+</section>
 
-<div class="koleksi">
+<section class="koleksi">
     <h2>KOLEKSI PILIHAN</h2>
-
     <div class="produk-container">
 
-        @forelse($products as $product)
+        @php
+            $items = [
+                ['img' => 'rosie victorian midi dress.jpg', 'cat' => 'DRESS', 'name' => 'Rosie Victorian Midi Dress', 'price' => 'Rp 495.000'],
+                ['img' => 'midnight navy tailored vest.jpg', 'cat' => 'OUTER', 'name' => 'Midnight Navy Tailored Vest', 'price' => 'Rp 245.000'],
+                ['img' => 'l epoque plaid tartan dress.jpg', 'cat' => 'DRESS', 'name' => 'L\'Epoque Plaid Tartan Dress', 'price' => 'Rp 425.000'],
+            ];
+        @endphp
+
+        @foreach($items as $item)
         <div class="card">
-
-            <div class="gambar"></div>
-
-            <div class="cat">
-                {{ $product->kategori->nama_kategori ?? '-' }}
+            <div class="gambar-box">
+                <img src="{{ asset('images/produk/' . $item['img']) }}" class="gambar" alt="{{ $item['name'] }}">
             </div>
-
-            <h4>{{ $product->nama_barang }}</h4>
-
-            <p>Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
-
-            <button class="btn-detail">LIHAT DETAIL</button>
-
+            <div class="kategori">{{ $item['cat'] }}</div>
+            <div class="nama-produk">{{ $item['name'] }}</div>
+            <div class="harga">{{ $item['price'] }}</div>
+            <a href="/detail-produk" style="text-decoration:none; color:inherit;">
+                <button class="btn-detail">LIHAT DETAIL</button>
+            </a>
         </div>
-        @empty
-            <p>Belum ada produk</p>
-        @endforelse
+        @endforeach
 
     </div>
 
-    <button class="btn-semua">LIHAT SEMUA</button>
-</div>
+    <a href="/produk"><button class="btn-semua">LIHAT SEMUA</button></a>
+</section>
 
 @endsection
